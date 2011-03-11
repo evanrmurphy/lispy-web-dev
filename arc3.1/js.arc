@@ -204,6 +204,7 @@
       (caris s '=)         (apply js-= (cdr s))
       (caris s 'while)     (apply js-while (cdr s))
       (caris s 'mac)       (eval `(js-mac ,@(cdr s)))
+      (caris s 'html)      (apply htmlfs cdr.s)
       (js-macs* (car s))   (apply (js-macs* (car s)) (cdr s))
                            (apply js-call s)))
 
