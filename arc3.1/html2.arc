@@ -70,6 +70,7 @@
       atom.s                 pr.s
       (caris s 'mac)         (eval `(html-mac ,@cdr.s))
       (caris s 'arc)         (apply eval cdr.s)
+      (caris s 'js)          (apply js1s cdr.s)
       (html-macs* car.s)     (apply (html-macs* car.s) cdr.s)
                              (parse-attrs car.s cdr.s nil)))
 
