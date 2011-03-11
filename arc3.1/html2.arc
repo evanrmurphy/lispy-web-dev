@@ -52,7 +52,7 @@
 (= html-macs* (table))
 
 (mac html-mac (name args . body)
-  `(= (html-macs* ',name) (fn ,args (htmlf ,@body))))
+  `(= (html-macs* ',name) (fn ,args (htmlfs ,@body))))
 
 ; should clean this up
 
