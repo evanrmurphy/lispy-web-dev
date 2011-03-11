@@ -54,7 +54,27 @@
 (mac html-mac (name args . body)
   `(= (html-macs* ',name) (fn ,args (htmlfs ,@body))))
 
-; should clean this up
+; should clean up
+; also, rest args don't work
+
+(mac html-def (name args . body)
+  `(= (html-macs* ',name)
+      (fn ,args
+        (apply htmlfs
+          ,(list 'quasiquote
+                 ((afn (xs acc)
+                    (if (no xs)
+                         acc
+                         (self (cdr xs)
+                               (tree-subst (car xs)
+                                           (list 'unquote (car xs))
+                                           acc))))
+                  args body))))))
+
+(mac html-proc (name . body)
+  `(= (html-macs* ',name) (fn () (apply htmlfs ',body))))
+
+; should clean up too
 
 (def parse-attrs (t as/body acc)
   (if no.as/body
@@ -69,6 +89,8 @@
   (if no.s                   nil
       atom.s                 pr.s
       (caris s 'mac)         (eval `(html-mac ,@cdr.s))
+      (caris s 'def)         (eval `(html-def ,@cdr.s))
+      (caris s 'proc)        (eval `(html-proc ,@cdr.s))
       (caris s 'arc)         (apply eval cdr.s)
       (caris s 'js)          (apply js1s cdr.s)
       (html-macs* car.s)     (apply (html-macs* car.s) cdr.s)
