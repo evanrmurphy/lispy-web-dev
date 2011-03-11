@@ -9,3 +9,4 @@
   <script src="jquery.js"></script>, and the browser handles
   it wrong; for now just do  (script src "jquery.js" "")
 - change names in js.arc tools from "sweet" to "js" or "lava"
+- integrate a reset.css? also, make a css.arc!
