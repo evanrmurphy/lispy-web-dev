@@ -17,4 +17,5 @@
             "between0.arc"
 
             "js.arc"
+            "html2.arc"
             ))
