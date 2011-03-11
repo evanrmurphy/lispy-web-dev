@@ -1,5 +1,8 @@
 ### TODO
 
+- provide an html-def (no quoting necessary) and html-proc 
+  (no quoting and no arguments) to cover the most common
+  cases of html-mac with less cognitive overhead
 - fix quoting bugs; there are some bugs with nested quotes
   and quoting when you have embedded in html (double quotes
   turning into single quotes?)
