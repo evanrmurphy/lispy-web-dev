@@ -152,12 +152,12 @@
 (html-test "#9" '(list "foo") "<ul><li>foo</li></ul>")
 (html-test "#10" '(list "foo" "bar") "<ul><li>foo</li><li>bar</li></ul>")
 
-(html-mac row args
+(html-mac trtds args
   `(tr ,@(map (fn (_) `(td ,_)) args)))
 
-(html-test "#11" '(row "foo") "<tr><td>foo</td></tr>")
-(html-test "#12" '(row "foo" "bar") "<tr><td>foo</td><td>bar</td></tr>")
-
+(html-test "#11" '(trtds "foo") "<tr><td>foo</td></tr>")
+(html-test "#12" '(trtds "foo" "bar") "<tr><td>foo</td><td>bar</td></tr>")
+ 
 (html-mac tab body
   `(table border 0 ,@body))
 
@@ -175,3 +175,27 @@
      ,@body))
 
 (html-test "#16" '(zerotable "foo") "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">foo</table>")
+
+(html-mac row args `(tr ,@args))
+
+(html-mac grid (width n-columns ratio . args)
+  ; TODO: should be gensyms
+  (withs (total-column-width (/ width n-columns)
+          column-width       (* ratio total-column-width)
+          gutter             (- total-column-width column-width))
+
+    (html-mac column (colspan . args)
+     `(td width ,column-width
+          colspan ,colspan
+        ,@args))
+    
+   `(table border 0 cellspacing 0
+           width ,width cellpadding ,(/ gutter 2)
+           style "margin-left:auto; margin-right:auto;"
+      ,@args
+      ; Boilerplate of n columns so that colspan attributes
+      ; work properly
+      (row
+        ,@(let acc nil
+            (repeat n-columns (push '(column 1) acc))
+            acc)))))

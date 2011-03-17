@@ -1,31 +1,3 @@
-; TODO: distill these macros into a library file
-
-(mac row args `(tr ,@args))
-
-(mac grid (width n-columns ratio . args)
-  ; TODO: should be gensyms
-  (withs (total-column-width (/ width n-columns)
-          column-width       (* ratio total-column-width)
-          gutter             (- total-column-width column-width))
-
-    (html-mac column (colspan . args)
-     `(td width ,column-width
-          colspan ,colspan
-        ,@args))
-    
-   `(table border 0 cellspacing 0
-           width ,width cellpadding ,(/ gutter 2)
-           style "margin-left:auto; margin-right:auto;"
-      ,@args
-      ; Boilerplate of n columns so that colspan attributes
-      ; work properly
-      (row
-        ,@(let acc nil
-            (repeat n-columns (push '(column 1) acc))
-            acc)))))
-
-; Example grid layout
-
 (proc header
   (h1 "My 960 Grid"))
 
